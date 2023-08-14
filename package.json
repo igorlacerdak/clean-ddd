@@ -1,0 +1,22 @@
+{
+  "name": "04-clean-ddd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@rocketseat/eslint-config": "^2.1.0",
+    "@types/node": "^20.4.10",
+    "eslint": "^8.47.0",
+    "typescript": "^5.1.6",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.34.1"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.9"
+  }
+}
