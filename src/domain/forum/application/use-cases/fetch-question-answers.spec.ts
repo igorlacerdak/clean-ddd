@@ -4,29 +4,37 @@ import { InMemoryAnswerRepository } from 'test/repositories/in-memory-answer-rep
 import { FetchQuestionAnswersUseCase } from './fetch-question-answers';
 import { makeAnswer } from 'test/factories/make-answer';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { InMemoryAnswerAttachmentRepository } from 'test/repositories/in-memory-answer-attachments-repository';
 
 let inMemoryAnswersRepository: InMemoryAnswerRepository;
+let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository;
 let sut: FetchQuestionAnswersUseCase;
 
 describe('Fetch Questions Answers', () => {
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswerRepository();
+    inMemoryAnswerAttachmentRepository =
+      new InMemoryAnswerAttachmentRepository();
+
+    inMemoryAnswersRepository = new InMemoryAnswerRepository(
+      inMemoryAnswerAttachmentRepository
+    );
+
     sut = new FetchQuestionAnswersUseCase(inMemoryAnswersRepository);
   });
 
   it('should to be able to fetch question answers', async () => {
     await inMemoryAnswersRepository.create(
-      makeAnswer({ questionId: new UniqueEntityID('question-1') })
+      makeAnswer({ answerId: new UniqueEntityID('answer-1') })
     );
     await inMemoryAnswersRepository.create(
-      makeAnswer({ questionId: new UniqueEntityID('question-1') })
+      makeAnswer({ answerId: new UniqueEntityID('answer-1') })
     );
     await inMemoryAnswersRepository.create(
-      makeAnswer({ questionId: new UniqueEntityID('question-1') })
+      makeAnswer({ answerId: new UniqueEntityID('answer-1') })
     );
 
     const result = await sut.execute({
-      questionId: 'question-1',
+      questionId: 'answer-1',
       page: 1,
     });
 
@@ -36,12 +44,12 @@ describe('Fetch Questions Answers', () => {
   it('should to be able to fetch paginated question answer', async () => {
     for (let i = 1; i <= 22; i++) {
       await inMemoryAnswersRepository.create(
-        makeAnswer({ questionId: new UniqueEntityID('question-1') })
+        makeAnswer({ answerId: new UniqueEntityID('answer-1') })
       );
     }
 
     const result = await sut.execute({
-      questionId: 'question-1',
+      questionId: 'answer-1',
       page: 2,
     });
 
