@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events';
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { AnswerAttachmentRepository } from '@/domain/forum/application/repositories/answer-attachment-repository';
 import { AnswerRepository } from '@/domain/forum/application/repositories/answers-repository';
@@ -10,6 +11,7 @@ export class InMemoryAnswerRepository implements AnswerRepository {
 
   public async create(answer: Answer): Promise<void> {
     this.items.push(answer);
+    DomainEvents.dispatchEventsForAggregate(answer.id);
   }
 
   public async findById(id: string): Promise<Answer | null> {
@@ -45,5 +47,7 @@ export class InMemoryAnswerRepository implements AnswerRepository {
     const itemIndex = this.items.findIndex((item) => item.id === answer.id);
 
     this.items[itemIndex] = answer;
+
+    DomainEvents.dispatchEventsForAggregate(answer.id);
   }
 }
